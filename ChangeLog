@@ -1,0 +1,13 @@
+2009-12-29    <manuel@desarrollo.sisdetec.es>
+
+	* src/common.hh:
+	* src/common.cc:
+	* src/world.cc:
+	* src/world.cc:
+	* src/prueba.cc:
+	* src/prueba.cc:
+	Just the first insertion in the ChangeLog and git commit and
+	anything else. Before this point there were only some c files and
+	one Makefile to experiment with OpenGL. (Nice thing!!)
+	I hope to have time to continue with this.
+
