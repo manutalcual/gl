@@ -1,6 +1,29 @@
-/*
- *
- */
+//
+// Program: glearning Copyright (c) 2009 Sisdetec, S.L.U.
+// Autor: Manuel Cano Muñoz
+// Fecha: Tue Dec 29 13:43:45 2009
+//
+// Time-stamp: <2009-12-29 19:07:20 manuel>
+//
+//
+//   This program is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2 of the License, or
+//   (at your option) any later version.
+//
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//
+//   You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+//   02110-1301	USA
+//
+//
+// Includes
+//
 #include <iostream>
 #include <math.h>
 
@@ -8,9 +31,9 @@
 #include "common.hh"
 #include "world.hh"
 
-/*
- * Suposedly default meaninful values.
- */
+//
+// Suposedly default meaninful values.
+//
 #define INVALID -1
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 360
@@ -22,22 +45,22 @@
 #define FAR 1000
 #define ROTATION 0.0
 #define AXIS 0.0
-/* camera orientation */
+// camera orientation
 #define ANGLE 0.0
 #define DELTA_ANGLE 0.0
 #define DELTA_MOVE 0.0
-#define CAM_X 0.0     /* camera's place */
+#define CAM_X 0.0     // camera's place
 #define CAM_Y 1.25
 #define CAM_Z 5.0
-#define POINT_X 0.0   /* point we look at */
+#define POINT_X 0.0   // point we look at
 #define POINT_Y 0.0
 #define POINT_Z -1.0f
-#define CAMUP_X 0.0   /* up vector */
+#define CAMUP_X 0.0   // up vector
 #define CAMUP_Y 1.0
 #define CAMUP_Z 0.0
-/* end camera orientation */
-#define PERSPECTIVE 1 /* If NOT frustum, must NOT be 0 */
-#define OPTSTO 100  /* Options backstore stack max */
+// end camera orientation
+#define PERSPECTIVE 1
+#define OPTSTO 100  // Options backstore stack max
 
 //
 // Windowing and drawing functions
