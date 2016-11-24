@@ -3,7 +3,7 @@
 // Autor: Manuel Cano Muñoz
 // Fecha: Tue Dec 29 13:43:45 2009
 //
-// Time-stamp: <2009-12-29 19:00:40 manuel>
+// Time-stamp: <2011-11-06 09:33:53 manuel>
 //
 //
 //   This program is free software; you can redistribute it and/or modify
@@ -55,6 +55,7 @@ int op = 1; // 0 = sum, 1 = rest
 float angle = ANGLE;
 float delta_angle = DELTA_ANGLE;
 int delta_move = DELTA_MOVE;
+float accel = ACCEL;
 
 //
 //Rotation. Yep, just try them.
@@ -67,7 +68,7 @@ float rot_z = ROTATION;
 float axes[] = {0., 0., 0.}; // Ax1s to turn over 
 
 //
-//To keep trace of program parameters.
+//To keep track of program parameters.
 //
 //
 struct option {
@@ -97,6 +98,7 @@ enum eopts {
 	e_cam_x, e_cam_y, e_cam_z,
 	e_point_x, e_point_y, e_point_z,
 	e_camup_x, e_camup_y, e_camup_z,
+	e_accel,
 	
 	// next, nothing to do with GL, just program boilerplate 
 	e_version, e_help, e_end
@@ -132,6 +134,8 @@ struct option opts[] = {
 	{ 7, "camup-x", '\0', CAMUP_X },
 	{ 7, "camup-y", '\0', CAMUP_Y },
 	{ 7, "camup-z", '\0', CAMUP_Z },
+
+	{ 5, "accel", '\0', ACCEL },
 
 	{ 7, "version", 'v', 0 },
 	{ 4, "help", 'h', 0 }
@@ -299,8 +303,8 @@ void right_left (float ang)
 	logp (10, "Angle: " << ang << ", " << angle);
 	logp (10, "Z axis: " << opts[e_point_z].val);
 	opts[e_point_x].val = sin(ang);
-	opts[e_point_z].val = -cos(ang);
-	logp (10, "Z axis: " << opts[e_point_z].val);
+	//opts[e_point_z].val = -cos(ang);
+	//logp (10, "Z axis: " << opts[e_point_z].val);
 
 	glLoadIdentity ();
 	gluLookAt (opts[e_cam_x].val,
@@ -317,8 +321,8 @@ void right_left (float ang)
 
 void forward_backward (int i)
 {
-	opts[e_cam_x].val += i * (opts[e_point_x].val) * 0.05;
-	opts[e_cam_z].val += i * (opts[e_point_z].val) * 0.05;
+	opts[e_cam_x].val += i * (opts[e_point_x].val) * (0.05 * accel);
+	opts[e_cam_z].val += i * (opts[e_point_z].val) * (0.05 * accel);
 
 	glLoadIdentity ();
 	gluLookAt (opts[e_cam_x].val,
@@ -331,35 +335,45 @@ void forward_backward (int i)
 	show_vars ();
 }
 
-void press_key(int key, int x, int y) {
+void press_key (int key, int x, int y) {
 
 	switch (key) {
-		case GLUT_KEY_LEFT:
-			delta_angle = -0.005f;
-			break;
-		case GLUT_KEY_RIGHT:
-			delta_angle = 0.005f;
-			break;
-		case GLUT_KEY_UP:
-			delta_move = 1;
-			break;
-		case GLUT_KEY_DOWN:
-			delta_move = -1;
-			break;
+	case GLUT_KEY_LEFT:
+		if (glutGetModifiers() & GLUT_ACTIVE_SHIFT)
+			accel = opts[e_accel].val;
+		else
+			accel = 1;
+		logp (10, "Accelerating? " << accel);
+		delta_angle = (-0.0005f * accel);
+		break;
+	case GLUT_KEY_RIGHT:
+		if (glutGetModifiers() & GLUT_ACTIVE_SHIFT)
+			accel = opts[e_accel].val;
+		else
+			accel = 1;
+		logp (10, "Accelerating? " << accel);
+		delta_angle = (0.0005f * accel);
+		break;
+	case GLUT_KEY_UP:
+		delta_move = 1 * accel;
+		break;
+	case GLUT_KEY_DOWN:
+		delta_move = -1 * accel;
+		break;
 	}
 }
 
 void release_key (int key, int x, int y)
 {
 	switch (key) {
-		case GLUT_KEY_LEFT: 
-		case GLUT_KEY_RIGHT:
-			delta_angle = 0.0f;
-			break;
-		case GLUT_KEY_UP: 
-		case GLUT_KEY_DOWN:
-			delta_move = 0;
-			break;
+	case GLUT_KEY_LEFT: 
+	case GLUT_KEY_RIGHT:
+		delta_angle = 0.0f;
+		break;
+	case GLUT_KEY_UP: 
+	case GLUT_KEY_DOWN:
+		delta_move = 0;
+		break;
 	}
 }
 
@@ -483,14 +497,14 @@ void keyboard (unsigned char key, int x, int y)
 	case 'p':
 	case 'P':
 		opts[e_perspective].val = 1;
-	reshape (width, height);
-	//logp (10, "perspective.");
+		reshape (width, height);
+		//logp (10, "perspective.");
 	break;
 	case 'o':
 	case 'O':
 		opts[e_perspective].val = 0;
-	reshape (width, height);
-	//logp (10, "ortho.");
+		reshape (width, height);
+		//logp (10, "ortho.");
 	break;
 	case 'z':
 		reset_vars ();
@@ -555,16 +569,34 @@ void mouse (int button, int state, int x, int y)
 
 void motion (int x, int y)
 {
+	static int sx = x;
+	static int sy = y;
+
 	if (lbutton_state == GLUT_DOWN) {
 		logp (10, "Mouse motion: " << x << ", "
 			  << y << ": " << button_x_mot);
 		
+		if (x > sx)
+			opts[e_cam_x].val += 0.01;
 		
+		if (x < sx)
+			opts[e_cam_x].val -= 0.01;
+			
+		if (y > sy)
+			opts[e_cam_y].val += 0.01;
+			
+		if (y < sy)
+			opts[e_cam_y].val -= 0.01;
+
+		right_left (opts[e_cam_x].val);
+
+#if 0		
 		if (x > button_x_mot) {
 			opts[e_cam_x].val += 0.01;
 			logp (10, "moving x axis: " << opts[e_cam_x].val);
 			right_left (opts[e_cam_x].val);
 		} else if (x < button_x_mot) {
+			opts[e_cam_x].val -= 0.01;
 			move[e_x] -= 0.01;
 			logp (10, "moving x axis: " << opts[e_cam_x].val);
 			right_left (opts[e_cam_x].val);
@@ -626,6 +658,7 @@ void motion (int x, int y)
 
 		nlogp (10, "Displaying things?");
 	} else if (rbutton_state == GLUT_DOWN) {
+#endif
 	}
 }
 
@@ -647,6 +680,7 @@ void reset_vars ()
 	opts[e_camup_x].val = CAMUP_X;
 	opts[e_camup_y].val = CAMUP_Y;
 	opts[e_camup_z].val = CAMUP_Z;
+	opts[e_accel].val = ACCEL;
 
 	opts[e_rotation].val = ROTATION;
 	opts[e_axis_x].val = AXIS;
@@ -674,6 +708,7 @@ void show_vars ()
 	logp (10, "Cam up x: " << opts[e_camup_x].val);
 	logp (10, "Cam up y: " << opts[e_camup_y].val);
 	logp (10, "Cam up z: " << opts[e_camup_z].val);
+	logp (10, "Accel:    " << opts[e_accel].val);
 	logp (10, "");
 
 	logp (10, "Axis x:   " << (axis & 0x1));
@@ -782,8 +817,6 @@ void parse_parameters (int argc, char ** argv)
 			}
 		}
 	}
-
-	//reset_vars ();
 }
 
 char * get_opt_name (char * item)
@@ -801,7 +834,7 @@ char * get_opt_name (char * item)
 
 void init_log ()
 {
-	fd = fopen("log", "wb");
+	fd = fopen("log", "w");
 	if (! fd)
 		exit (1);
 

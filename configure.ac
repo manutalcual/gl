@@ -10,13 +10,13 @@ AC_PROG_CXX
 
 AC_CHECK_HEADERS([iostream stdio.h unistd.h string.h GL/gl.h GL/glut.h])
 
-AC_CHECK_LIB([glut], [glutInit], [], AC_MSG_ERROR([prueba requires OpenGL Glut library.]))
-AC_DEFINE(XGLUT, 1, [We have OpenGL Glut library])
-GLUT_LIB="-lglut"
+#AC_CHECK_LIB([glut], [glutInit], [], AC_MSG_ERROR([prueba requires OpenGL Glut library.]))
+#AC_DEFINE(XGLUT, 1, [We have OpenGL Glut library])
+#GLUT_LIB="-lglut -lglh"
 
-AC_CHECK_LIB([GL], [glEnable], [], AC_MSG_ERROR([prueba requires OpenGL library.]))
-AC_DEFINE(XOPENGL, 1, [We have OpenGL library])
-OPENGL_LIB="-lGL"
+#AC_CHECK_LIB([GL], [glEnable], [], AC_MSG_ERROR([prueba requires OpenGL library.]))
+#AC_DEFINE(XOPENGL, 1, [We have OpenGL library])
+#OPENGL_LIB="-lGL"
 
 MACHINE=`uname -m`
 AC_DEFINE_UNQUOTED(MACHINE, $MACHINE, [Architecture])
@@ -43,8 +43,8 @@ fi
 AM_CONDITIONAL(LOG, [test "x$LOG" = xyes])
 
 
-AC_SUBST(OPENGL_LIB)
-AC_SUBST(GLUT_LIB)
+#AC_SUBST(OPENGL_LIB)
+#AC_SUBST(GLUT_LIB)
 AC_SUBST(MACHINE)
 AC_SUBST(OS)
 

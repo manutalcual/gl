@@ -3,7 +3,7 @@
 // Autor: Manuel Cano Muñoz
 // Fecha: Tue Dec 29 15:58:38 2009
 //
-// Time-stamp: <2009-12-29 19:00:47 manuel>
+// Time-stamp: <2011-11-06 10:51:10 manuel>
 //
 //
 //   This program is free software; you can redistribute it and/or modify
@@ -59,13 +59,14 @@
 #define nlogfr(x, y)
 
 #ifdef LOG
-#define msg(x) std::cerr << "[" << __FILE__ << ":" <<					\
-														 __LINE__ << "]: " << x << std::endl;
-					
+#define msg(x) std::cerr << "[" << __FILE__ \
+	<< ":" << __LINE__ << "]: " << x		\
+	<< std::endl;
+
 #define elog(x) std::cerr << "["				\
 	<< __FILE__ << ":"							\
 	<< __LINE__ << "]: " << x << std::endl;
-	
+
 #define elogn(x) std::cerr << x;
 	
 #define elogf(x, y) logFiles[y] << "["			\

@@ -3,7 +3,7 @@
 // Autor: Manuel Cano Muñoz
 // Fecha: Tue Dec 29 13:43:45 2009
 //
-// Time-stamp: <2009-12-29 19:05:15 manuel>
+// Time-stamp: <2011-11-05 21:11:32 manuel>
 //
 //
 //   This program is free software; you can redistribute it and/or modify
@@ -90,8 +90,3 @@ building::building ()
 #endif
 
 }
-
-
-
-
-

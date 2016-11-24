@@ -7,6 +7,10 @@ glearning_SOURCES = common.hh common.cc \
 	world.hh world.cc \
 	prueba.hh prueba.cc
 
+glearning_LDADD = -lglut -lGLU -lGL
+
+
+
 if DEBUG
 glearning_CFLAGS = -Wall -g -pedantic
 else
@@ -16,6 +20,3 @@ endif
 if LOG
 glearning_CFLAGS += -v
 endif
-
-
-

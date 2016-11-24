@@ -3,7 +3,7 @@
 // Autor: Manuel Cano Muñoz
 // Fecha: Tue Dec 29 13:43:45 2009
 //
-// Time-stamp: <2009-12-29 19:07:20 manuel>
+// Time-stamp: <2010-12-16 16:56:44 manuel>
 //
 //
 //   This program is free software; you can redistribute it and/or modify
@@ -49,6 +49,7 @@
 #define ANGLE 0.0
 #define DELTA_ANGLE 0.0
 #define DELTA_MOVE 0.0
+#define ACCEL 1
 #define CAM_X 0.0     // camera's place
 #define CAM_Y 1.25
 #define CAM_Z 5.0
